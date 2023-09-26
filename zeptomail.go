@@ -7,7 +7,18 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/pkg/errors"
+)
+
+// validate for json payload validation
+var validate = validator.New(validator.WithRequiredStructEnabled())
+
+const (
+	// MethodPOST for HTTP POST request method
+	MethodPOST string = "POST"
+	// MethodGET for HTTP GET request method
+	MethodGET string = "GET"
 )
 
 // Client is an object for the configs
