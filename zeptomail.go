@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// validate for json payload validation
+// validate runs a validation for json payload validation
 var validate = validator.New(validator.WithRequiredStructEnabled())
 
 const (
