@@ -51,13 +51,10 @@ type (
 package main
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
 	"github.com/iqquee/zeptomail"
-	"github.com/pkg/errors"
 )
 
 func main() {
