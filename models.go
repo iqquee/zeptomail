@@ -1,11 +1,30 @@
 package zeptomail
 
 type (
-	SendEmailReq struct {
-		BounceAddress string
+	// SendHTMLEmailReq is the SendHTMLEmail() request object
+	SendHTMLEmailReq struct {
+		From     EmailAddress  `json:"from" validate:"required"`
+		To       []SendEmailTo `json:"to" validate:"required"`
+		Subject  string        `json:"subject" validate:"required"`
+		Htmlbody string        `json:"htmlbody" validate:"required"`
 	}
 
-	// SendTemplatedEmailReq is the SendTemplatedEmail request object
+	// SendHTMLEmailRes is the SendHTMLEmail() response object
+	SendHTMLEmailRes struct {
+		Data      []SendEmailResData `json:"data"`
+		Message   string             `json:"message"`
+		RequestId string             `json:"request_id"`
+		Object    string             `json:"object"`
+	}
+
+	// SendEmailResData is the Data object for the SendHTMLEmailRes object
+	SendEmailResData struct {
+		Code           string        `json:"code"`
+		AdditionalInfo []interface{} `json:"additional_info"`
+		Message        string        `json:"message"`
+	}
+
+	// SendTemplatedEmailReq is the SendTemplatedEmail() request object
 	SendTemplatedEmailReq struct {
 		/*
 			Unique key identifier for your template.
@@ -19,22 +38,9 @@ type (
 		*/
 		BounceAddress string `json:"bounce_address"`
 		// Allowed value - A valid sender email address with "address" and "name" key-value pairs
-		From struct {
-			// A valid email address containing a domain that is verified in your Mail Agent.
-			Address string `json:"address" validate:"required, email"`
-			// Sender's name.
-			Name string `json:"name" validate:"required"`
-		} `json:"from" validate:"required"`
+		From EmailAddress `json:"from" validate:"required"`
 		// Allowed value - JSON object of email_address.
-		To []struct {
-			// A valid recipient email address with "address" and "name" key-value pairs.
-			EmailAddress struct {
-				// Recipient's email address field.
-				Address string `json:"address" validate:"required"`
-				// Recipient's name.
-				Name string `json:"name" validate:"required"`
-			} `json:"email_address" validate:"required"`
-		} `json:"to" validate:"required"`
+		To []SendEmailTo `json:"to" validate:"required"`
 		/*
 			You can use merge tags to replace the placeholders with multiple values for different recipients. The merge tags of the mail to be sent. Merge Tags can be set in HTML body, text body, subject and client reference.
 
@@ -46,16 +52,7 @@ type (
 		*/
 		MergeInfo map[string]interface{} `json:"merge_info" validate:"required"`
 		// Allowed value - JSON object of reply_to email addresses.
-		ReplyTo struct {
-			/*
-				The email address to which the recipient's email responses will be addressed.
-
-				Allowed value - A valid email address containing a domain that is verified in your Mail Agent.
-			*/
-			Address string `json:"address"`
-			// Name for the reply-to parameter.
-			Name string `json:"name"`
-		} `json:"reply_to"`
+		ReplyTo EmailAddress `json:"reply_to"`
 		/*
 			You can enable or disable email click tracking here.
 
@@ -133,5 +130,34 @@ type (
 			*/
 			Cid string `json:"cid"`
 		} `json:"attachments"`
+	}
+
+	// SendEmailTo is the object for recipient email
+	SendEmailTo struct {
+		// A valid recipient email address with "address" and "name" key-value pairs.
+		EmailAddress EmailAddress `json:"email_address" validate:"required"`
+	}
+	// EmailAddress is an email address object
+	EmailAddress struct {
+		/*
+			The email address to which the recipient's email responses will be addressed.
+
+			Allowed value - A valid email address containing a domain that is verified in your Mail Agent.
+		*/
+		Address string `json:"address" validate:"required"`
+		// Recipient's name.
+		Name string `json:"name" validate:"required"`
+	}
+
+	// SendTemplatedEmailRes is the SendTemplatedEmail() response object
+	SendTemplatedEmailRes struct {
+		Data []struct {
+			Code           string        `json:"code"`
+			AdditionalInfo []interface{} `json:"additional_info"`
+			Message        string        `json:"message"`
+		} `json:"data"`
+		Message   string `json:"message"`
+		RequestId string `json:"request_id"`
+		Object    string `json:"object"`
 	}
 )

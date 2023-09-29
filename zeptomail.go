@@ -11,7 +11,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-// validate runs a validation for json payload validation
+// validate runs a validation on the incoming json payload
 var validate = validator.New(validator.WithRequiredStructEnabled())
 
 const (
@@ -23,7 +23,7 @@ const (
 
 // Client is an object for the configs
 type Client struct {
-	Http    http.Client
+	Http    *http.Client
 	BaseUrl string
 	Token   string
 }
@@ -32,7 +32,7 @@ type Client struct {
 func New(h http.Client, token string) *Client {
 	return &Client{
 		BaseUrl: "https://api.zeptomail.com/v1.1/",
-		Http:    h,
+		Http:    &h,
 		Token:   token,
 	}
 }
@@ -53,7 +53,8 @@ func (c *Client) newRequest(method, reqURL string, reqBody interface{}, resp int
 	req, err := http.NewRequest(method, newURL, body)
 	if reqBody != nil {
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("Authorization", fmt.Sprintf("zoho-enczapikey %v", c.Token))
+		req.Header.Set("Authorization", fmt.Sprintf("Zoho-enczapikey %v", c.Token))
+		fmt.Printf("This is the Token: %v\n", c.Token)
 	}
 
 	if err != nil {
@@ -65,9 +66,13 @@ func (c *Client) newRequest(method, reqURL string, reqBody interface{}, resp int
 		return errors.Wrap(err, "http client ::: client failed to execute request")
 	}
 
+	defer res.Body.Close()
+
 	if err := json.NewDecoder(res.Body).Decode(&resp); err != nil {
 		return errors.Wrap(err, "http client ::: unable to unmarshal response body")
 	}
+
+	fmt.Printf("This is the status code: %v\n", res.Status)
 
 	return nil
 }
