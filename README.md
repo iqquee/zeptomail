@@ -19,9 +19,9 @@ $ touch example.go
 ```
 
 # SendHTMLEmail
-SendHTMLEmail() sends a HTML template email
+`SendHTMLEmail()` sends a HTML template email
 
-This method takes in the zeptomail.SendHTMLEmailReq{} struct as a parameter.
+This method takes in the `zeptomail.SendHTMLEmailReq{}` struct as a parameter.
 ### List of all the fields available in the zeptomail.SendHTMLEmailReq{} struct.
 ```go
 type ( 
