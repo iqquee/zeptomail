@@ -2,7 +2,7 @@
 A golang sdk for interacting with zeptomail api 
 
 # Get Started
-Inother to use this package, you need to first head over to https://zoho.com to create an account to get your `Authorization Token Key`.
+In order to use this package, you need to first head over to https://zoho.com to create an account to get your `Authorization Token Key`.
 # Documentation
 See the [ZeptoMail API Docs](https://www.zoho.com/zeptomail/help/introduction.html)
 
@@ -61,7 +61,6 @@ func main() {
 	zeptomailToken := "your zeptomail authorization token"
 
 	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
-	
     sendTo := []zeptomail.SendEmailTo{}
 	sendTo = append(sendTo, zeptomail.SendEmailTo{
 		EmailAddress: zeptomail.EmailAddress{
