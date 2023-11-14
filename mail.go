@@ -1,5 +1,6 @@
 package zeptomail
 
+// TODO create an object for the error response from the server
 // SendHTMLEmail sends a HTML template email
 func (c *Client) SendHTMLEmail(req SendHTMLEmailReq) (*SendHTMLEmailRes, error) {
 	url := "email"
