@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/pkg/errors"
@@ -72,7 +73,21 @@ func (c *Client) newRequest(method, reqURL string, reqBody interface{}, resp int
 		return errors.Wrap(err, "http client ::: unable to unmarshal response body")
 	}
 
-	fmt.Printf("This is the status code: %v\n", res.Status)
+	if err := c.error(res.StatusCode); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// error checks for errors in respect to the status code and return accordingly
+func (c *Client) error(statusCode int) error {
+	code := fmt.Sprint(statusCode)
+	if strings.HasPrefix(code, "4") {
+		errors.Wrap(nil, "Failure === Kindly check your reqest as there is an error.")
+	} else if strings.HasPrefix(code, "5") {
+		errors.Wrap(nil, "Server error")
+	}
 
 	return nil
 }
