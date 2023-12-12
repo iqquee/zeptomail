@@ -69,24 +69,27 @@ func (c *Client) newRequest(method, reqURL string, reqBody interface{}, resp int
 
 	defer res.Body.Close()
 
-	if err := json.NewDecoder(res.Body).Decode(&resp); err != nil {
-		return errors.Wrap(err, "http client ::: unable to unmarshal response body")
-	}
-
-	if err := c.error(res.StatusCode); err != nil {
+	if err := c.error(res, resp); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-// error checks for errors in respect to the status code and return accordingly
-func (c *Client) error(statusCode int) error {
-	code := fmt.Sprint(statusCode)
-	if strings.HasPrefix(code, "4") {
-		errors.Wrap(nil, "Failure === Kindly check your reqest as there is an error.")
-	} else if strings.HasPrefix(code, "5") {
-		errors.Wrap(nil, "Server error")
+// error checks for errors in respect to the status code and return response payload accordingly
+func (c *Client) error(httpRes *http.Response, response interface{}) error {
+	code := fmt.Sprint(httpRes.StatusCode)
+	if strings.HasPrefix(code, "4") || strings.HasPrefix(code, "5") {
+		var errorRes ErrorResponse
+		if err := json.NewDecoder(httpRes.Body).Decode(&errorRes); err != nil {
+			return errors.Wrap(err, "http client ::: unable to unmarshal error response body")
+		}
+
+		fmt.Printf("An error occured ::: %v\n", errorRes)
+	}
+
+	if err := json.NewDecoder(httpRes.Body).Decode(&response); err != nil {
+		return errors.Wrap(err, "http client ::: unable to unmarshal response body")
 	}
 
 	return nil

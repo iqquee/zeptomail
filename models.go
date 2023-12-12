@@ -1,6 +1,22 @@
 package zeptomail
 
 type (
+	// ErrorResponse is an object for errors
+	ErrorResponse struct {
+		// It consists of code, details, message, and request_id parameters
+		Error map[string]interface{} `json:"error"`
+		// The code corresponding to the status of the request made
+		Code string `json:"code"`
+		// It consists of code, message and target parameters
+		Details interface{} `json:"details"`
+		// Reason for the error
+		Message string `json:"message"`
+		// The field that caused the error
+		Target string `json:"target"`
+		// A unique id which is generated for every request
+		RequestId string `json:"request_id"`
+	}
+
 	// SendHTMLEmailReq is the SendHTMLEmail() request object
 	SendHTMLEmailReq struct {
 		From     EmailAddress  `json:"from" validate:"required"`
