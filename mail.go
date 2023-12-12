@@ -34,3 +34,20 @@ func (c *Client) SendTemplatedEmail(req SendTemplatedEmailReq) (*SendTemplatedEm
 
 	return &response, nil
 }
+
+// SendBatchTemplatedEmail sends a batch templated email
+func (c *Client) SendBatchTemplatedEmail(req SendBatchTemplatedEmailReq) (*SendTemplatedEmailRes, error) {
+	url := "email/template/batch"
+	method := MethodPOST
+
+	if err := validate.Struct(&req); err != nil {
+		return nil, err
+	}
+
+	var response SendTemplatedEmailRes
+	if err := c.newRequest(method, url, req, response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
