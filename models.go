@@ -15,6 +15,8 @@ type (
 		Target string `json:"target"`
 		// A unique id which is generated for every request
 		RequestId string `json:"request_id"`
+		// A unique id which is generated for every request
+		TargetValue string `json:"target_value"`
 	}
 
 	// SendHTMLEmailReq is the SendHTMLEmail() request object
