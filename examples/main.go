@@ -13,6 +13,12 @@ func main() {
 
 	// sendHTMLEmail sends a templated email
 	sendTemplatedEmail()
+
+	// SendBatchTemplatedEmail sends a batch templated email
+	SendBatchTemplatedEmail()
+
+	// AddEmailTemplate can be used to add an email template.
+	AddEmailTemplate()
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -116,4 +122,26 @@ func SendBatchTemplatedEmail() {
 	for _, e := range res.Data {
 		fmt.Printf("response message: %v\n", e.Message)
 	}
+}
+
+// AddEmailTemplate can be used to add an email template.
+func AddEmailTemplate() {
+	zeptomailToken := "your zeptomail authorization token"
+
+	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+
+	req := zeptomail.AddEmailTemplateReq{
+		TemplateName:   "E-invite",
+		Subject:        "Invitation to the event",
+		HtmlBody:       "<h1> Hi {{name}}</h1>, invitation link {{link}}", // for a html template
+		TemplateAlias:  "e-invite emails",
+		MailagentAlias: "mail agent alias",
+	}
+
+	res, err := client.AddEmailTemplate(req)
+	if err != nil {
+		fmt.Printf("This is the error: %v", err.Error())
+	}
+
+	fmt.Printf("response message: %v\n", res.Message)
 }

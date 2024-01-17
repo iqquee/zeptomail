@@ -294,4 +294,34 @@ type (
 			Cid string `json:"cid"`
 		} `json:"attachments"`
 	}
+
+	// AddEmailTemplateReq is the AddEmailTemplate() response object
+	AddEmailTemplateReq struct {
+		// 	Name of the template
+		TemplateName string `json:"template_name"`
+		// Subject to be added in the email template.
+		Subject string `json:"subject"`
+		// The corresponding HTML content of the body in the email template.
+		HtmlBody string `json:"htmlbody"`
+		// 	Plain text body of the email in the template.
+		TextBody string `json:"textbody"`
+		// 	Unique alias for the template. It can be used instead of the template key. It can be obtained from the Edit template section in your ZeptoMail account.
+		TemplateAlias string `json:"template_alias"`
+		// Unique alias value given to the Mail Agent. It is available in the Setup info section of your Mail Agent.
+		MailagentAlias string `json:"_"`
+	}
+	// AddEmailTemplateRes is the AddEmailTemplate() request object
+	AddEmailTemplateRes struct {
+		Data []struct {
+			HtmlBody      string `json:"htmlbody"`
+			UploadTime    string `json:"upload_time"`
+			Template_name string `json:"template_name"`
+			Template_key  string `json:"template_key"`
+			Template_size int    `json:"template_size"`
+			Modified_time string `json:"modified_time"`
+			Subject       string `json:"subject"`
+		} `json:"data"`
+		Message string `json:"message"`
+		Object  string `json:"object"`
+	}
 )
