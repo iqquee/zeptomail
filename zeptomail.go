@@ -20,6 +20,8 @@ const (
 	MethodPOST string = "POST"
 	// MethodGET for HTTP GET request method
 	MethodGET string = "GET"
+	// MethodPUT for HTTP PUT request method
+	MethodPUT string = "PUT"
 )
 
 // Client is an object for the configs

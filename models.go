@@ -308,7 +308,7 @@ type (
 		// 	Unique alias for the template. It can be used instead of the template key. It can be obtained from the Edit template section in your ZeptoMail account.
 		TemplateAlias string `json:"template_alias"`
 		// Unique alias value given to the Mail Agent. It is available in the Setup info section of your Mail Agent.
-		MailagentAlias string `json:"_"`
+		MailagentAlias string `json:"_" validate:"required"`
 	}
 	// AddEmailTemplateRes is the AddEmailTemplate() request object
 	AddEmailTemplateRes struct {
@@ -323,5 +323,21 @@ type (
 		} `json:"data"`
 		Message string `json:"message"`
 		Object  string `json:"object"`
+	}
+
+	// UpdateEmailTemplateReq is the UpdateEmailTemplate() response object
+	UpdateEmailTemplateReq struct {
+		// 	Name of the template
+		TemplateName string `json:"template_name" validate:"required"`
+		// Subject to be added in the email template.
+		Subject string `json:"subject" validate:"required"`
+		// The corresponding HTML content of the body in the email template.
+		HtmlBody string `json:"htmlbody"`
+		// Plain text body of the email in the template.
+		TextBody string `json:"textbody"`
+		// TemplateKey is the template key.
+		TemplateKey string `json:"" validate:"required"`
+		// Unique alias value given to the Mail Agent. It is available in the Setup info section of your Mail Agent.
+		MailagentAlias string `json:"" validate:"required"`
 	}
 )

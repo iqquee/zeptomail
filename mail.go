@@ -70,3 +70,20 @@ func (c *Client) AddEmailTemplate(req AddEmailTemplateReq) (*AddEmailTemplateRes
 
 	return &response, nil
 }
+
+// UpdateEmailTemplate can be used to update an email template.
+func (c *Client) UpdateEmailTemplate(req UpdateEmailTemplateReq) (*AddEmailTemplateRes, error) {
+	url := fmt.Sprintf("mailagents/%s/templates/%s", req.MailagentAlias, req.TemplateName)
+	method := MethodPUT
+
+	if err := validate.Struct(&req); err != nil {
+		return nil, err
+	}
+
+	var response AddEmailTemplateRes
+	if err := c.newRequest(method, url, req, response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}

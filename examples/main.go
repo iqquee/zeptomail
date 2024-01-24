@@ -19,6 +19,9 @@ func main() {
 
 	// AddEmailTemplate can be used to add an email template.
 	AddEmailTemplate()
+
+	// UpdateEmailTemplate can be used to update an email template.
+	UpdateEmailTemplate()
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -139,6 +142,28 @@ func AddEmailTemplate() {
 	}
 
 	res, err := client.AddEmailTemplate(req)
+	if err != nil {
+		fmt.Printf("This is the error: %v", err.Error())
+	}
+
+	fmt.Printf("response message: %v\n", res.Message)
+}
+
+// UpdateEmailTemplate can be used to update an email template.
+func UpdateEmailTemplate() {
+	zeptomailToken := "your zeptomail authorization token"
+
+	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+
+	req := zeptomail.UpdateEmailTemplateReq{
+		TemplateName:   "E-invite",
+		Subject:        "Invitation to the event",
+		HtmlBody:       "<h1> Hi {{name}}</h1>, invitation link {{link}}", // for a html template
+		TemplateKey:    "your template key",
+		MailagentAlias: "mail agent alias",
+	}
+
+	res, err := client.UpdateEmailTemplate(req)
 	if err != nil {
 		fmt.Printf("This is the error: %v", err.Error())
 	}
