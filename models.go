@@ -48,7 +48,7 @@ type (
 			Unique key identifier for your template.
 			template_alias is the alias name given to the template key. It can be used in the place of template_key.​
 		*/
-		TemplateKey string `json:"template_key"`
+		TemplateKey string `json:"template_key" validate:"required"`
 		/*
 			The email address to which bounced emails will be sent.
 
@@ -203,7 +203,7 @@ type (
 			Unique key identifier for your template.
 			template_alias is the alias name given to the template key. It can be used in the place of template_key.​
 		*/
-		TemplateKey string `json:"template_key"`
+		TemplateKey string `json:"template_key" validate:"required"`
 		/*
 			The email address to which bounced emails will be sent.
 
@@ -298,9 +298,9 @@ type (
 	// AddEmailTemplateReq is the AddEmailTemplate() response object
 	AddEmailTemplateReq struct {
 		// 	Name of the template
-		TemplateName string `json:"template_name"`
+		TemplateName string `json:"template_name" validate:"required"`
 		// Subject to be added in the email template.
-		Subject string `json:"subject"`
+		Subject string `json:"subject" validate:"required"`
 		// The corresponding HTML content of the body in the email template.
 		HtmlBody string `json:"htmlbody"`
 		// 	Plain text body of the email in the template.
