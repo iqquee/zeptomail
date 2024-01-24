@@ -43,7 +43,7 @@ func New(h http.Client, token string) *Client {
 }
 
 // newRequest makes a http request to the zeptomail server and decodes the server response into the reqBody parameter passed into the newRequest method
-func (c *Client) newRequest(method, reqURL string, reqBody interface{}, resp interface{}) error {
+func (c *Client) newRequest(method, reqURL string, reqBody, resp interface{}) error {
 	newURL := c.BaseUrl + reqURL
 	var body io.Reader
 
