@@ -22,6 +22,9 @@ func main() {
 
 	// UpdateEmailTemplate can be used to update an email template.
 	UpdateEmailTemplate()
+
+	// GetEmailTemplate is used to fetch a particular email template.
+	GetEmailTemplate()
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -164,6 +167,22 @@ func UpdateEmailTemplate() {
 	}
 
 	res, err := client.UpdateEmailTemplate(req)
+	if err != nil {
+		fmt.Printf("This is the error: %v", err.Error())
+	}
+
+	fmt.Printf("response message: %v\n", res.Message)
+}
+
+// GetEmailTemplate is used to fetch a particular email template.
+func GetEmailTemplate() {
+	zeptomailToken := "your zeptomail authorization token"
+
+	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+
+	var TemplateKey, MailagentAlias string = "your template key", "mail agent alias"
+
+	res, err := client.GetEmailTemplate(MailagentAlias, TemplateKey)
 	if err != nil {
 		fmt.Printf("This is the error: %v", err.Error())
 	}

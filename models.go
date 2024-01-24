@@ -340,4 +340,28 @@ type (
 		// Unique alias value given to the Mail Agent. It is available in the Setup info section of your Mail Agent.
 		MailagentAlias string `json:"" validate:"required"`
 	}
+
+	// GetEmailTemplateReq is the GetEmailTemplate() response object
+	GetEmailTemplateReq struct {
+		Data struct {
+			HtmlBody     string `json:"htmlbody"`
+			CreatedTime  string `json:"created_time"`
+			TemplateName string `json:"template_name"`
+			TemplateKey  string `json:"template_key"`
+			ModifiedTime string `json:"modified_time"`
+			Attachments  []struct {
+				FileCacheKey string `json:"file_cache_key"`
+				ContentType  string `json:"content_type"`
+				FileName     string `json:"file_name"`
+			} `json:"attachments"`
+			Subject         string `json:"subject"`
+			TemplateAlias   string `json:"template_alias"`
+			SampleMergeInfo struct {
+				Name string `json:"name"`
+				Link string `json:"link"`
+			} `json:"sample_merge_info"`
+		} `json:"data"`
+		Message string `json:"message"`
+		Object  string `json:"object"`
+	}
 )

@@ -54,7 +54,7 @@ func (c *Client) SendBatchTemplatedEmail(req SendBatchTemplatedEmailReq) (*SendT
 	return &response, nil
 }
 
-// AddEmailTemplate can be used to add an email template.
+// AddEmailTemplate is used to add an email template.
 func (c *Client) AddEmailTemplate(req AddEmailTemplateReq) (*AddEmailTemplateRes, error) {
 	url := fmt.Sprintf("mailagents/%s/templates", req.MailagentAlias)
 	method := MethodPOST
@@ -71,7 +71,7 @@ func (c *Client) AddEmailTemplate(req AddEmailTemplateReq) (*AddEmailTemplateRes
 	return &response, nil
 }
 
-// UpdateEmailTemplate can be used to update an email template.
+// UpdateEmailTemplate is used to update an email template.
 func (c *Client) UpdateEmailTemplate(req UpdateEmailTemplateReq) (*AddEmailTemplateRes, error) {
 	url := fmt.Sprintf("mailagents/%s/templates/%s", req.MailagentAlias, req.TemplateKey)
 	method := MethodPUT
@@ -82,6 +82,19 @@ func (c *Client) UpdateEmailTemplate(req UpdateEmailTemplateReq) (*AddEmailTempl
 
 	var response AddEmailTemplateRes
 	if err := c.newRequest(method, url, req, response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
+// GetEmailTemplate is used to fetch a particular email template.
+func (c *Client) GetEmailTemplate(MailAgentAlias, TemplateKey string) (*GetEmailTemplateReq, error) {
+	url := fmt.Sprintf("mailagents/%s/templates/%s", MailAgentAlias, TemplateKey)
+	method := MethodGET
+
+	var response GetEmailTemplateReq
+	if err := c.newRequest(method, url, nil, response); err != nil {
 		return nil, err
 	}
 
