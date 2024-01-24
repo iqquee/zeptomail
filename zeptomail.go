@@ -22,6 +22,8 @@ const (
 	MethodGET string = "GET"
 	// MethodPUT for HTTP PUT request method
 	MethodPUT string = "PUT"
+	// MethodDELETE for HTTP DELETE request method
+	MethodDELETE string = "DELETE"
 )
 
 // Client is an object for the configs

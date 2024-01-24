@@ -100,3 +100,16 @@ func (c *Client) GetEmailTemplate(MailAgentAlias, TemplateKey string) (*GetEmail
 
 	return &response, nil
 }
+
+// DeleteEmailTemplate is used to delete a template using template key.
+func (c *Client) DeleteEmailTemplate(MailAgentAlias, TemplateKey string) (*interface{}, error) {
+	url := fmt.Sprintf("mailagents/%s/templates/%s", MailAgentAlias, TemplateKey)
+	method := MethodDELETE
+
+	var response interface{}
+	if err := c.newRequest(method, url, nil, response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}

@@ -25,6 +25,9 @@ func main() {
 
 	// GetEmailTemplate is used to fetch a particular email template.
 	GetEmailTemplate()
+
+	// DeleteEmailTemplate is used to delete a template using template key.
+	DeleteEmailTemplate()
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -188,4 +191,20 @@ func GetEmailTemplate() {
 	}
 
 	fmt.Printf("response message: %v\n", res.Message)
+}
+
+// DeleteEmailTemplate is used to delete a template using template key.
+func DeleteEmailTemplate() {
+	zeptomailToken := "your zeptomail authorization token"
+
+	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+
+	var TemplateKey, MailagentAlias string = "your template key", "mail agent alias"
+
+	res, err := client.DeleteEmailTemplate(MailagentAlias, TemplateKey)
+	if err != nil {
+		fmt.Printf("This is the error: %v", err.Error())
+	}
+
+	fmt.Printf("response message: %v\n", res)
 }
