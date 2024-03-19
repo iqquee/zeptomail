@@ -9,7 +9,7 @@ See the [ZeptoMail API Docs](https://www.zoho.com/zeptomail/help/introduction.ht
 # Installation
 This package can in installed using the go command below.
 ```sh
-go get github.com/iqquee/zeptomail
+go get github.com/iqquee/zeptomail@latest
 ```
 # Quick start
 ```sh
