@@ -113,3 +113,22 @@ func (c *Client) DeleteEmailTemplate(MailAgentAlias, TemplateKey string) (*inter
 
 	return &response, nil
 }
+
+
+func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHTMLEmailRes, err error) {
+	url := "email/batch"
+	Method := MethodPOST
+
+	if err := validate.Struct(&req); err != nil {
+		return nil, err
+	}
+
+	var response SendBatchHTMLEmailRes
+
+	if err := c.newRequest(url, Method, req, res); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+}
+
