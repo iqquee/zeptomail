@@ -28,6 +28,9 @@ func main() {
 
 	// DeleteEmailTemplate is used to delete a template using template key.
 	DeleteEmailTemplate()
+
+	// SendBatchHTML sends a batch HTML Email
+	SendBatchHTMLEmail()
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -208,3 +211,43 @@ func DeleteEmailTemplate() {
 
 	fmt.Printf("response message: %v\n", res)
 }
+
+func SendBatchHTMLEmail() {
+	zeptomailToken := "your zeptomail authorization token"
+
+	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+	sendTo := []zeptomail.SendBatchTemplateEmailTo{}
+	sendTo = append(sendTo, zeptomail.SendBatchTemplateEmailTo{
+		EmailAddress: zeptomail.EmailAddress{
+			Address: "paul.s@zfashions.com",
+			Name:    "Paul",
+		},
+		MergeInfo: map[string]interface{}{
+			"useriD": "useriD",
+		},
+	})
+
+	data := "<div><b>This is a sample email.{{contact}} {{company}}</b></div"
+
+	req := zeptomail.SendBatchHTMLEmailReq{
+		To: sendTo,
+		From: zeptomail.EmailAddress{
+			Address: "invoice@zylker.com",
+			Name:    "Invoice",
+		},
+		Subject:  "Account confirmation",
+		Htmlbody: data,
+	}
+
+	res, err := client.SendBatchHTMLEmail(req)
+
+	if err != nil {
+		fmt.Printf("This is the error: %v", err.Error())
+	}
+
+	for _, e := range res.Data {
+		fmt.Printf("response message: %v\n", e.Message)
+	}
+
+}
+

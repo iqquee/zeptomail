@@ -364,4 +364,30 @@ type (
 		Message string `json:"message"`
 		Object  string `json:"object"`
 	}
+
+
+	SendBatchHTMLEmailReq struct {
+		From      EmailAddress           `json:"from" validate:"required"`
+		To []SendBatchTemplateEmailTo         `json:"to" validate:"required"`
+		MergeInfo map[string]interface{} `json:"merge_info" validate:"required"`
+		Subject   string                 `json:"subject" validate:"required"`
+		Htmlbody  string                 `json:"htmlbody" validate:"required"`
+	}
+
+	// SendHTMLEmailRes is the SendHTMLEmail() response object
+	SendBatchHTMLEmailRes struct {
+		Data      []SendBatchResData `json:"data"`
+		Message   string             `json:"message"`
+		RequestId string             `json:"request_id"`
+		Object    string             `json:"object"`
+	}
+
+	// SendBatchResData is the Data object for the SendHTMLEmailRes object
+	SendBatchResData struct {
+		Code           string        `json:"code"`
+		AdditionalInfo []interface{} `json:"additional_info"`
+		Message        string        `json:"message"`
+	}
 )
+
+
