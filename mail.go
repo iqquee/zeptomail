@@ -125,7 +125,7 @@ func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHT
 
 	var response SendBatchHTMLEmailRes
 
-	if err := c.newRequest(url, Method, req, res); err != nil {
+	if err := c.newRequest(url, Method, req, response); err != nil {
 		return nil, err
 	}
 
