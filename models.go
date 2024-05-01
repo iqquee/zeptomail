@@ -383,11 +383,31 @@ type (
 	}
 
 	// SendBatchResData is the Data object for the SendHTMLEmailRes object
-	SendBatchResData struct {
+	SendBatchResData struct {	
 		Code           string        `json:"code"`
 		AdditionalInfo []interface{} `json:"additional_info"`
 		Message        string        `json:"message"`
 	}
+
+	// FileCacheUploadAPIReq is the FileCacheUploadAPI() response
+	FileCacheUploadAPIReq struct {
+		// name of file uploaded
+		FileName string `json:"name" validate:"required"`
+		// file path of the file uploaded6
+		FileContent []byte `json:"file" validate:"required"`
+	}
+
+	// FileCacheUploadAPIRes is the FileCacheUploadAPI() response object
+	FileCacheUploadAPIRes struct {
+		FileCacheKey string `json:"file_cache_key"`
+		Data []FileCacheUploadAPIResData `json:"data"`
+   		 Message string `json:"message"`
+		 Object  string `json:"object"`	
+}
+     // FileCacheUploadAPIResData is the Data object for the FileCacheUploadAPIRes object
+	FileCacheUploadAPIResData struct {
+		Code           string        `json:"code"`
+        AdditionalInfo []interface{} `json:"additional_info"`
+        Message        string        `json:"message"`
+	}
 )
-
-

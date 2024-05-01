@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
-
+	"os"
+	"path/filepath"
 	"github.com/iqquee/zeptomail"
 )
 
@@ -31,6 +33,9 @@ func main() {
 
 	// SendBatchHTML sends a batch HTML Email
 	SendBatchHTMLEmail()
+
+	// FileCacheUploadAPI is used to upload a file to the cache.
+	FileCacheUploadAPI()
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -250,4 +255,86 @@ func SendBatchHTMLEmail() {
 	}
 
 }
+// file cache upload is
+	func FileCacheUploadAPI() {
+	zeptomailToken := "your zeptomail authorization token"
+
+
+	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+	
+	// Set the file path
+	filePath := "path_to_your_file.jpg"
+
+	
+
+	// Read the file content
+	file, err := os.Open(filePath)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+		}
+	defer file.Close()
+
+
+	
+	fileContent, err := io.ReadAll(file)
+	if err != nil {
+		fmt.Println("Error reading file content:", err)
+		return
+	}
+
+		// Create the request object
+		
+		req :=zeptomail.FileCacheUploadAPIReq{
+			FileContent: fileContent,
+			FileName:    filepath.Base(filePath),
+		}
+
+		res, err := client.FileCacheUploadAPI(req)
+		if err != nil {
+		fmt.Printf("This is the error: %v\n", err.Error())
+	}
+
+	
+	for _, e := range res.Data {
+		fmt.Printf("response message: %v\n", e.Message)
+	}
+
+
+
+/**
+	// Create a multipart form
+	body := &bytes.Buffer{}
+	writer := multipart.NewWriter(body)
+
+	// Add the file to the form
+	part, err := writer.CreateFormFile("file", (req))
+	if err != nil {
+		fmt.Println("Error creating form file:", err)
+		return
+	}
+	_, err = io.Copy(part, bytes.NewReader(req.FileContent))
+	if err != nil {
+		fmt.Println("Error copying file content to form:", err)
+		return
+	}
+
+		// Close the multipart form
+		err = writer.Close()
+		if err != nil {
+			fmt.Println("Error closing multipart form:", err)
+			return
+		} **/
+
+		 
+ }
+
+	
+	
+	
+	
+	
+	
+	
+	
 
