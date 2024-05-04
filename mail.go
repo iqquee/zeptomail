@@ -131,7 +131,6 @@ func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHT
 	return &response, nil
 }
 
-// files?name=logo.jpg
 func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUploadAPIRes, err error) {
 	url := fmt.Sprintf("%sfiles?name=%s", c.BaseUrl, req.FileName)
 	Method := MethodPOST
