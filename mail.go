@@ -114,7 +114,6 @@ func (c *Client) DeleteEmailTemplate(MailAgentAlias, TemplateKey string) (*inter
 	return &response, nil
 }
 
-
 func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHTMLEmailRes, err error) {
 	url := "email/batch"
 	Method := MethodPOST
@@ -133,10 +132,8 @@ func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHT
 }
 
 func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUploadAPIRes, err error) {
-	url := c.BaseUrl
+	url := fmt.Sprintf("%sfiles?name=%s", c.BaseUrl, req.FileName)
 	Method := MethodPOST
-	
-
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
@@ -151,4 +148,3 @@ func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUp
 	return &response, nil
 
 }
-
