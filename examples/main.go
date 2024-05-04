@@ -217,6 +217,8 @@ func DeleteEmailTemplate() {
 	fmt.Printf("response message: %v\n", res)
 }
 
+
+//
 func SendBatchHTMLEmail() {
 	zeptomailToken := "your zeptomail authorization token"
 
@@ -255,7 +257,7 @@ func SendBatchHTMLEmail() {
 	}
 
 }
-// file cache upload is
+// filecacheupload is used to upload file to file cache
 	func FileCacheUploadAPI() {
 	zeptomailToken := "your zeptomail authorization token"
 
@@ -299,32 +301,6 @@ func SendBatchHTMLEmail() {
 	for _, e := range res.Data {
 		fmt.Printf("response message: %v\n", e.Message)
 	}
-
-
-
-/**
-	// Create a multipart form
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-
-	// Add the file to the form
-	part, err := writer.CreateFormFile("file", (req))
-	if err != nil {
-		fmt.Println("Error creating form file:", err)
-		return
-	}
-	_, err = io.Copy(part, bytes.NewReader(req.FileContent))
-	if err != nil {
-		fmt.Println("Error copying file content to form:", err)
-		return
-	}
-
-		// Close the multipart form
-		err = writer.Close()
-		if err != nil {
-			fmt.Println("Error closing multipart form:", err)
-			return
-		} **/
 
 		 
  }

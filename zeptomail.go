@@ -57,7 +57,6 @@ func (c *Client) newRequest(method, reqURL string, reqBody, resp interface{}) er
 
 	req, err := http.NewRequest(method, newURL, body)
 	if reqBody != nil {
-	//	req.Header.Add("Content-Type", "text/plain")
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Authorization", fmt.Sprintf("Zoho-enczapikey %v", c.Token))
 		fmt.Printf("This is the Token: %v\n", c.Token)

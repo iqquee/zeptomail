@@ -133,7 +133,7 @@ func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHT
 }
 
 func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUploadAPIRes, err error) {
-	url := "https://api.zeptomail.com/v1.1/files?name="
+	url := c.BaseUrl
 	Method := MethodPOST
 	
 
@@ -149,10 +149,6 @@ func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUp
 	}
 
 	return &response, nil
-
-
-
-
 
 }
 
