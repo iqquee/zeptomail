@@ -132,3 +132,23 @@ func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHT
 	return &response, nil
 }
 
+func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUploadAPIRes, err error) {
+	url := c.BaseUrl
+	Method := MethodPOST
+	
+
+
+	if err := validate.Struct(&req); err != nil {
+		return nil, err
+	}
+
+	var response FileCacheUploadAPIRes
+
+	if err := c.newRequest(url, Method, req, response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
+
+}
+

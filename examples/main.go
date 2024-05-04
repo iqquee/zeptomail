@@ -2,8 +2,10 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
-
+	"os"
+	"path/filepath"
 	"github.com/iqquee/zeptomail"
 )
 
@@ -31,6 +33,9 @@ func main() {
 
 	// SendBatchHTML sends a batch HTML Email
 	SendBatchHTMLEmail()
+
+	// FileCacheUploadAPI is used to upload a file to the cache.
+	FileCacheUploadAPI()
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -212,6 +217,8 @@ func DeleteEmailTemplate() {
 	fmt.Printf("response message: %v\n", res)
 }
 
+
+//
 func SendBatchHTMLEmail() {
 	zeptomailToken := "your zeptomail authorization token"
 
@@ -250,4 +257,60 @@ func SendBatchHTMLEmail() {
 	}
 
 }
+// filecacheupload is used to upload file to file cache
+	func FileCacheUploadAPI() {
+	zeptomailToken := "your zeptomail authorization token"
+
+
+	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+	
+	// Set the file path
+	filePath := "path_to_your_file.jpg"
+
+	
+
+	// Read the file content
+	file, err := os.Open(filePath)
+	if err != nil {
+		fmt.Println("Error opening file:", err)
+		return
+		}
+	defer file.Close()
+
+
+	
+	fileContent, err := io.ReadAll(file)
+	if err != nil {
+		fmt.Println("Error reading file content:", err)
+		return
+	}
+
+		// Create the request object
+		
+		req :=zeptomail.FileCacheUploadAPIReq{
+			FileContent: fileContent,
+			FileName:    filepath.Base(filePath),
+		}
+
+		res, err := client.FileCacheUploadAPI(req)
+		if err != nil {
+		fmt.Printf("This is the error: %v\n", err.Error())
+	}
+
+	
+	for _, e := range res.Data {
+		fmt.Printf("response message: %v\n", e.Message)
+	}
+
+		 
+ }
+
+	
+	
+	
+	
+	
+	
+	
+	
 
