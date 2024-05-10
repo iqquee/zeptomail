@@ -410,4 +410,36 @@ type (
         AdditionalInfo []interface{} `json:"additional_info"`
         Message        string        `json:"message"`
 	}
+
+	// Template Request is the ListEmailTemplates() request object
+	ListEmailTemplatesReq struct {
+
+		metadata struct {
+			MailAgentAlias string `json: "mailagentalias"`
+			Offset int		`json: "offset"`
+			Limit int  `json: "limit"`
+		}
+
+		data struct {
+			CreatedTime string `json: "createdtime"`
+			TemplateName string `json: "templatename"`
+			TemplateKey string `json: "templatekey"`
+			ModifiedTime string `json: modifiedtime"`
+			Subject string `"json: subject"`
+			TemplateAlias string `"json: templatealias"`	
+		}`json:"data"`
+		
+		Message string `json:"message"`
+		
+	}
+
+
+	// Template Request is the GetEmailTemplates() response object
+
+ 	TemplateRes struct {
+	
+}
+
+
+
 )

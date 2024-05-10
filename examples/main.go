@@ -6,7 +6,9 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
 	"github.com/iqquee/zeptomail"
+	
 )
 
 func main() {
@@ -36,6 +38,10 @@ func main() {
 
 	// FileCacheUploadAPI is used to upload a file to the cache.
 	FileCacheUploadAPI()
+
+	//GetEmailTemplates is used to list the required number of email templates in your ZeptoMail account.
+	ListEmailTemplates()
+	
 }
 
 // sendHTMLEmail sends a HTML Email
@@ -300,10 +306,41 @@ func SendBatchHTMLEmail() {
 	
 	for _, e := range res.Data {
 		fmt.Printf("response message: %v\n", e.Message)
+	} 
+
+ 
+
 	}
 
+
+
+	func ListEmailTemplates() {
+	
+			zeptomailToken := "your zeptomail authorization token"
+		
+			client := zeptomail.New(*http.DefaultClient, zeptomailToken)
+		
+			var Offset, Limit int; 
+			var MailagentAlias string; 
+			
+
+			res, err := client.ListEmailTemplates(MailagentAlias, Offset, Limit)
+			if err != nil {
+				fmt.Printf("This is the error: %v", err.Error())
+			}
+		
+			fmt.Printf("response message: %v\n", res.Message)
+		}
+		
+
+		
+		
+
+		
+
+
 		 
- }
+ 
 
 	
 	
