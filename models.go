@@ -434,12 +434,5 @@ type (
 	}
 
 
-	// Template Request is the GetEmailTemplates() response object
-
- 	TemplateRes struct {
-	
-}
-
-
 
 )
