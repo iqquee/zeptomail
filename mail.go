@@ -148,9 +148,7 @@ func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUp
 	return &response, nil
 
 }
- ListEmailTemplates
-
-
+ // ListEmailTemplates
 func (c *Client)  ListEmailTemplates(MailAgentAlias string, Offset, limit int) (req *ListEmailTemplatesReq, err error) {
 url := fmt.Sprintf("mailagents/%s/templates?offset=%d&limit=%d", MailAgentAlias, Offset, limit)
 Method := MethodGET
