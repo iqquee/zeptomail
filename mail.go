@@ -1,19 +1,20 @@
 package zeptomail
 
-import "fmt"
+import (
+	"fmt"
+	"net/http"
+)
 
-// TODO create an object for the error response from the server
-// SendHTMLEmail sends a HTML template email
+// SendHTMLEmail sends a HTML email
 func (c *Client) SendHTMLEmail(req SendHTMLEmailReq) (*SendHTMLEmailRes, error) {
 	url := "email"
-	method := MethodPOST
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
 	}
 
 	var response SendHTMLEmailRes
-	if err := c.newRequest(method, url, req, response); err != nil {
+	if err := c.newRequest(http.MethodPost, url, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -23,14 +24,13 @@ func (c *Client) SendHTMLEmail(req SendHTMLEmailReq) (*SendHTMLEmailRes, error) 
 // SendTemplatedEmail sends a templated email
 func (c *Client) SendTemplatedEmail(req SendTemplatedEmailReq) (*SendTemplatedEmailRes, error) {
 	url := "email/template"
-	method := MethodPOST
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
 	}
 
 	var response SendTemplatedEmailRes
-	if err := c.newRequest(method, url, req, response); err != nil {
+	if err := c.newRequest(http.MethodPost, url, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -40,14 +40,13 @@ func (c *Client) SendTemplatedEmail(req SendTemplatedEmailReq) (*SendTemplatedEm
 // SendBatchTemplatedEmail sends a batch templated email
 func (c *Client) SendBatchTemplatedEmail(req SendBatchTemplatedEmailReq) (*SendTemplatedEmailRes, error) {
 	url := "email/template/batch"
-	method := MethodPOST
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
 	}
 
 	var response SendTemplatedEmailRes
-	if err := c.newRequest(method, url, req, response); err != nil {
+	if err := c.newRequest(http.MethodPost, url, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -57,14 +56,13 @@ func (c *Client) SendBatchTemplatedEmail(req SendBatchTemplatedEmailReq) (*SendT
 // AddEmailTemplate is used to add an email template.
 func (c *Client) AddEmailTemplate(req AddEmailTemplateReq) (*AddEmailTemplateRes, error) {
 	url := fmt.Sprintf("mailagents/%s/templates", req.MailagentAlias)
-	method := MethodPOST
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
 	}
 
 	var response AddEmailTemplateRes
-	if err := c.newRequest(method, url, req, response); err != nil {
+	if err := c.newRequest(http.MethodPost, url, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -74,14 +72,13 @@ func (c *Client) AddEmailTemplate(req AddEmailTemplateReq) (*AddEmailTemplateRes
 // UpdateEmailTemplate is used to update an email template.
 func (c *Client) UpdateEmailTemplate(req UpdateEmailTemplateReq) (*AddEmailTemplateRes, error) {
 	url := fmt.Sprintf("mailagents/%s/templates/%s", req.MailagentAlias, req.TemplateKey)
-	method := MethodPUT
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
 	}
 
 	var response AddEmailTemplateRes
-	if err := c.newRequest(method, url, req, response); err != nil {
+	if err := c.newRequest(http.MethodPut, url, req, &response); err != nil {
 		return nil, err
 	}
 
@@ -89,12 +86,11 @@ func (c *Client) UpdateEmailTemplate(req UpdateEmailTemplateReq) (*AddEmailTempl
 }
 
 // GetEmailTemplate is used to fetch a particular email template.
-func (c *Client) GetEmailTemplate(MailAgentAlias, TemplateKey string) (*GetEmailTemplateReq, error) {
+func (c *Client) GetEmailTemplate(MailAgentAlias, TemplateKey string) (*GetEmailTemplateRes, error) {
 	url := fmt.Sprintf("mailagents/%s/templates/%s", MailAgentAlias, TemplateKey)
-	method := MethodGET
 
-	var response GetEmailTemplateReq
-	if err := c.newRequest(method, url, nil, response); err != nil {
+	var response GetEmailTemplateRes
+	if err := c.newRequest(http.MethodGet, url, nil, &response); err != nil {
 		return nil, err
 	}
 
@@ -104,65 +100,59 @@ func (c *Client) GetEmailTemplate(MailAgentAlias, TemplateKey string) (*GetEmail
 // DeleteEmailTemplate is used to delete a template using template key.
 func (c *Client) DeleteEmailTemplate(MailAgentAlias, TemplateKey string) (*interface{}, error) {
 	url := fmt.Sprintf("mailagents/%s/templates/%s", MailAgentAlias, TemplateKey)
-	method := MethodDELETE
 
 	var response interface{}
-	if err := c.newRequest(method, url, nil, response); err != nil {
+	if err := c.newRequest(http.MethodDelete, url, nil, &response); err != nil {
 		return nil, err
 	}
 
 	return &response, nil
 }
 
+// SendBatchHTMLEmail The API is used to send a batch of transactional HTML emails.
 func (c *Client) SendBatchHTMLEmail(req SendBatchHTMLEmailReq) (res *SendBatchHTMLEmailRes, err error) {
 	url := "email/batch"
-	Method := MethodPOST
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
 	}
 
 	var response SendBatchHTMLEmailRes
-
-	if err := c.newRequest(url, Method, req, response); err != nil {
+	if err := c.newRequest(http.MethodPost, url, req, &response); err != nil {
 		return nil, err
 	}
 
 	return &response, nil
 }
 
+// FileCacheUploadAPI The API is used to upload files to File Cache
 func (c *Client) FileCacheUploadAPI(req FileCacheUploadAPIReq) (res *FileCacheUploadAPIRes, err error) {
 	url := fmt.Sprintf("%sfiles?name=%s", c.BaseUrl, req.FileName)
-	Method := MethodPOST
 
 	if err := validate.Struct(&req); err != nil {
 		return nil, err
 	}
 
 	var response FileCacheUploadAPIRes
-
-	if err := c.newRequest(url, Method, req, response); err != nil {
+	if err := c.newRequest(http.MethodPost, url, req, &response); err != nil {
 		return nil, err
 	}
 
 	return &response, nil
-
 }
- // ListEmailTemplates
-func (c *Client)  ListEmailTemplates(MailAgentAlias string, Offset, limit int) (req *ListEmailTemplatesReq, err error) {
-url := fmt.Sprintf("mailagents/%s/templates?offset=%d&limit=%d", MailAgentAlias, Offset, limit)
-Method := MethodGET
+
+// ListEmailTemplates You can use this API to list the required number of email templates in your ZeptoMail account.
+func (c *Client) ListEmailTemplates(MailAgentAlias string, Offset, limit int) (req *ListEmailTemplatesRes, err error) {
+	url := fmt.Sprintf("mailagents/%s/templates?offset=%d&limit=%d", MailAgentAlias, Offset, limit)
 
 	if err := validate.Struct(&req); err != nil {
-	return nil, err
+		return nil, err
+	}
+
+	var response ListEmailTemplatesRes
+	if err := c.newRequest(http.MethodGet, url, nil, &response); err != nil {
+		return nil, err
+	}
+
+	return &response, nil
 }
-
-var response ListEmailTemplatesReq
-
-if err := c.newRequest(url, Method, nil, response); err != nil {
-	return nil, err
-}
-
-  return &response, nil
-}
-

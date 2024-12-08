@@ -1,22 +1,22 @@
 package zeptomail
 
 type (
+
 	// ErrorResponse is an object for errors
 	ErrorResponse struct {
-		// It consists of code, details, message, and request_id parameters
-		Error map[string]interface{} `json:"error"`
-		// The code corresponding to the status of the request made
 		Code string `json:"code"`
 		// It consists of code, message and target parameters
-		Details interface{} `json:"details"`
+		Details []struct {
+			Code    string `json:"code"`
+			Message string `json:"message"`
+			Target  string `json:"target"`
+		} `json:"details"`
 		// Reason for the error
 		Message string `json:"message"`
 		// The field that caused the error
 		Target string `json:"target"`
 		// A unique id which is generated for every request
 		RequestId string `json:"request_id"`
-		// A unique id which is generated for every request
-		TargetValue string `json:"target_value"`
 	}
 
 	// SendHTMLEmailReq is the SendHTMLEmail() request object
@@ -33,6 +33,7 @@ type (
 		Message   string             `json:"message"`
 		RequestId string             `json:"request_id"`
 		Object    string             `json:"object"`
+		Error     ErrorResponse      `json:"error"`
 	}
 
 	// SendEmailResData is the Data object for the SendHTMLEmailRes object
@@ -59,6 +60,9 @@ type (
 		From EmailAddress `json:"from" validate:"required"`
 		// Allowed value - JSON object of email_address.
 		To []SendEmailTo `json:"to" validate:"required"`
+
+		CC  []SendEmailTo `json:"cc"`
+		BCC []SendEmailTo `json:"bcc"`
 		/*
 			You can use merge tags to replace the placeholders with multiple values for different recipients. The merge tags of the mail to be sent. Merge Tags can be set in HTML body, text body, subject and client reference.
 
@@ -70,7 +74,7 @@ type (
 		*/
 		MergeInfo map[string]interface{} `json:"merge_info" validate:"required"`
 		// Allowed value - JSON object of reply_to email addresses.
-		ReplyTo EmailAddress `json:"reply_to"`
+		ReplyTo []EmailAddress `json:"reply_to"`
 		/*
 			You can enable or disable email click tracking here.
 
@@ -98,7 +102,7 @@ type (
 
 			False - Disable email open tracking.
 		*/
-		TrackOpens bool `json:"track_client_referenceopens"`
+		TrackOpens bool `json:"track_opens"`
 		// An identifier set by the user to track a particular transaction.
 		ClientReference string `json:"client_reference"`
 		// The additional headers to be sent in the email for your reference purposes.
@@ -192,9 +196,10 @@ type (
 			AdditionalInfo []interface{} `json:"additional_info"`
 			Message        string        `json:"message"`
 		} `json:"data"`
-		Message   string `json:"message"`
-		RequestId string `json:"request_id"`
-		Object    string `json:"object"`
+		Message   string        `json:"message"`
+		RequestId string        `json:"request_id"`
+		Object    string        `json:"object"`
+		Error     ErrorResponse `json:"error"`
 	}
 
 	// SendBatchTemplatedEmailReq is the SendBatchTemplatedEmail() request object
@@ -243,7 +248,7 @@ type (
 
 			False - Disable email open tracking.
 		*/
-		TrackOpens bool `json:"track_client_referenceopens"`
+		TrackOpens bool `json:"track_opens"`
 		// An identifier set by the user to track a particular transaction.
 		ClientReference string `json:"client_reference"`
 		// The additional headers to be sent in the email for your reference purposes.
@@ -310,6 +315,7 @@ type (
 		// Unique alias value given to the Mail Agent. It is available in the Setup info section of your Mail Agent.
 		MailagentAlias string `json:"_" validate:"required"`
 	}
+
 	// AddEmailTemplateRes is the AddEmailTemplate() request object
 	AddEmailTemplateRes struct {
 		Data []struct {
@@ -321,8 +327,9 @@ type (
 			Modified_time string `json:"modified_time"`
 			Subject       string `json:"subject"`
 		} `json:"data"`
-		Message string `json:"message"`
-		Object  string `json:"object"`
+		Message string        `json:"message"`
+		Object  string        `json:"object"`
+		Error   ErrorResponse `json:"error"`
 	}
 
 	// UpdateEmailTemplateReq is the UpdateEmailTemplate() response object
@@ -341,8 +348,8 @@ type (
 		MailagentAlias string `json:"" validate:"required"`
 	}
 
-	// GetEmailTemplateReq is the GetEmailTemplate() response object
-	GetEmailTemplateReq struct {
+	// GetEmailTemplateRes is the GetEmailTemplate() response object
+	GetEmailTemplateRes struct {
 		Data struct {
 			HtmlBody     string `json:"htmlbody"`
 			CreatedTime  string `json:"created_time"`
@@ -361,17 +368,18 @@ type (
 				Link string `json:"link"`
 			} `json:"sample_merge_info"`
 		} `json:"data"`
-		Message string `json:"message"`
-		Object  string `json:"object"`
+		Message string        `json:"message"`
+		Object  string        `json:"object"`
+		Error   ErrorResponse `json:"error"`
 	}
 
-
+	// SendBatchHTMLEmailReq is the SendBatchHTMLEmail() request object
 	SendBatchHTMLEmailReq struct {
-		From      EmailAddress           `json:"from" validate:"required"`
-		To []SendBatchTemplateEmailTo         `json:"to" validate:"required"`
-		MergeInfo map[string]interface{} `json:"merge_info" validate:"required"`
-		Subject   string                 `json:"subject" validate:"required"`
-		Htmlbody  string                 `json:"htmlbody" validate:"required"`
+		From      EmailAddress               `json:"from" validate:"required"`
+		To        []SendBatchTemplateEmailTo `json:"to" validate:"required"`
+		MergeInfo map[string]interface{}     `json:"merge_info" validate:"required"`
+		Subject   string                     `json:"subject" validate:"required"`
+		Htmlbody  string                     `json:"htmlbody" validate:"required"`
 	}
 
 	// SendHTMLEmailRes is the SendHTMLEmail() response object
@@ -380,10 +388,11 @@ type (
 		Message   string             `json:"message"`
 		RequestId string             `json:"request_id"`
 		Object    string             `json:"object"`
+		Error     ErrorResponse      `json:"error"`
 	}
 
 	// SendBatchResData is the Data object for the SendHTMLEmailRes object
-	SendBatchResData struct {	
+	SendBatchResData struct {
 		Code           string        `json:"code"`
 		AdditionalInfo []interface{} `json:"additional_info"`
 		Message        string        `json:"message"`
@@ -399,40 +408,36 @@ type (
 
 	// FileCacheUploadAPIRes is the FileCacheUploadAPI() response object
 	FileCacheUploadAPIRes struct {
-		FileCacheKey string `json:"file_cache_key"`
-		Data []FileCacheUploadAPIResData `json:"data"`
-   		 Message string `json:"message"`
-		 Object  string `json:"object"`	
-}
-     // FileCacheUploadAPIResData is the Data object for the FileCacheUploadAPIRes object
+		FileCacheKey string                      `json:"file_cache_key"`
+		Data         []FileCacheUploadAPIResData `json:"data"`
+		Message      string                      `json:"message"`
+		Object       string                      `json:"object"`
+		Error        ErrorResponse               `json:"error"`
+	}
+
+	// FileCacheUploadAPIResData is the Data object for the FileCacheUploadAPIRes object
 	FileCacheUploadAPIResData struct {
 		Code           string        `json:"code"`
-        AdditionalInfo []interface{} `json:"additional_info"`
-        Message        string        `json:"message"`
+		AdditionalInfo []interface{} `json:"additional_info"`
+		Message        string        `json:"message"`
 	}
 
-	// Template Request is the ListEmailTemplates() request object
-	ListEmailTemplatesReq struct {
-
-		metadata struct {
-			MailAgentAlias string `json: "mailagentalias"`
-			Offset int		`json: "offset"`
-			Limit int  `json: "limit"`
+	// ListEmailTemplatesRes is Data object for the ListEmailTemplates() response object
+	ListEmailTemplatesRes struct {
+		Metadata struct {
+			Count  int `json:"count"`
+			Offset int `json:"offset"`
+			Limit  int `json:"limit"`
 		}
-
-		data struct {
-			CreatedTime string `json: "createdtime"`
-			TemplateName string `json: "templatename"`
-			TemplateKey string `json: "templatekey"`
-			ModifiedTime string `json: modifiedtime"`
-			Subject string `"json: subject"`
-			TemplateAlias string `"json: templatealias"`	
-		}`json:"data"`
-		
-		Message string `json:"message"`
-		
+		Data struct {
+			CreatedTime   string `json:"created_time"`
+			TemplateName  string `json:"template_name"`
+			TemplateKey   string `json:"template_key"`
+			ModifiedTime  string `json:"modified_time"`
+			Subject       string `json:"subject"`
+			TemplateAlias string `json:"template_alias"`
+		} `json:"data"`
+		Message string        `json:"message"`
+		Error   ErrorResponse `json:"error"`
 	}
-
-
-
 )
