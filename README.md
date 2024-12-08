@@ -59,20 +59,18 @@ import (
 
 func main() {
 	zeptomailToken := "your zeptomail authorization token"
-
 	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
-    sendTo := []zeptomail.SendEmailTo{}
-	sendTo = append(sendTo, zeptomail.SendEmailTo{
-		EmailAddress: zeptomail.EmailAddress{
-			Address: "rudra.d@zylker.com",
-			Name:    "Rudra",
-		},
-	})
 
 	data := "<div><b> Kindly click on Verify Account to confirm your account </b></div>"
-
 	req := zeptomail.SendHTMLEmailReq{
-		To: sendTo,
+		To: To: []zeptomail.SendEmailTo{
+			{
+				EmailAddress: zeptomail.EmailAddress{
+					Address: "rudra.d@zylker.com",
+					Name:    "Rudra",
+				},
+			},
+		},
 		From: zeptomail.EmailAddress{
 			Address: "accounts@info.zylker.com",
 			Name:    "Paula",
@@ -155,7 +153,7 @@ type (
 
 			False - Disable email open tracking.
 		*/
-		TrackOpens bool `json:"track_client_referenceopens"`
+		TrackOpens bool `json:"track_opens"`
 		// An identifier set by the user to track a particular transaction.
 		ClientReference string `json:"client_reference"`
 		// The additional headers to be sent in the email for your reference purposes.
@@ -241,18 +239,17 @@ import (
 func main() {
 	zeptomailToken := "your zeptomail authorization token"
 	tempKey := "your zeptomail template key"
-
 	client := zeptomail.New(*http.DefaultClient, zeptomailToken)
-    sendTo := []zeptomail.SendEmailTo{}
-	sendTo = append(sendTo, zeptomail.SendEmailTo{
-		EmailAddress: zeptomail.EmailAddress{
-			Address: "rudra.d@zylker.com",
-			Name:    "Rudra",
-		},
-	})
 
 	req := zeptomail.SendTemplatedEmailReq{
-		To: sendTo,
+		To: []zeptomail.SendEmailTo{
+			{
+				EmailAddress: zeptomail.EmailAddress{
+					Address: "rudra.d@zylker.com",
+					Name:    "Rudra",
+				},
+			},
+		},
 		From: zeptomail.EmailAddress{
 			Address: "accounts@info.zylker.com",
 			Name:    "Paula",
