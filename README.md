@@ -63,7 +63,7 @@ func main() {
 
 	data := "<div><b> Kindly click on Verify Account to confirm your account </b></div>"
 	req := zeptomail.SendHTMLEmailReq{
-		To: To: []zeptomail.SendEmailTo{
+		To: []zeptomail.SendEmailTo{
 			{
 				EmailAddress: zeptomail.EmailAddress{
 					Address: "rudra.d@zylker.com",
